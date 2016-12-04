@@ -84,16 +84,16 @@ void inline HandleRawInput( HWND &hWnd, HRAWINPUT &lParam )
 					case 'D' : pCamera->setMovementToggle( 3, 1 );
 					break;
 
-					case 'L' : {
+					case 32 : {
 									if ( ++lightingTechnique == 4 ) lightingTechnique = 0;
 
 									char MSG[255];
 									switch (lightingTechnique)
 									{
-										case 0 : sprintf_s(MSG, "Per Vertex Phong Lighting (Push L to toggle)"); 	break;
-										case 1 : sprintf_s(MSG, "Per Pixel Phong Lighting (Push L to toggle)"); 	break;
-										case 2 : sprintf_s(MSG, "Per Vertex Blinn-Phong Lighting (Push L to toggle)"); 	break;
-										case 3 : sprintf_s(MSG, "Per Pixel Blinn-Phong Lighting (Push L to toggle)"); 	break;
+										case 0 : sprintf_s(MSG, "Per Vertex Phong Lighting"); 	break;
+										case 1 : sprintf_s(MSG, "Per Pixel Phong Lighting"); 	break;
+										case 2 : sprintf_s(MSG, "Per Vertex Phong Lighting with Texture"); 	break;
+										case 3 : sprintf_s(MSG, "Per Pixel Phong Lighting with Texture"); 	break;
 									};
 									SetWindowText(hWnd, MSG);
 							   }

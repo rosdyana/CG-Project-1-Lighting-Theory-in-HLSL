@@ -427,21 +427,9 @@ void dxManager::renderScene()
 	{
 		case 0 : pTechnique = pBasicEffect->GetTechniqueByName("RENDER_VL_PHONG");	break;
 		case 1 : pTechnique = pBasicEffect->GetTechniqueByName("RENDER_PL_PHONG");	break;
-		case 2 : pTechnique = pBasicEffect->GetTechniqueByName("RENDER_VL_BLINNPHONG");	break;
-		case 3 : pTechnique = pBasicEffect->GetTechniqueByName("RENDER_PL_BLINNPHONG");	break;
+		case 2 : pTechnique = pBasicEffect->GetTechniqueByName("RENDER_VL_PHONG_WITH_TEXTURE");	break;
+		case 3 : pTechnique = pBasicEffect->GetTechniqueByName("RENDER_PL_PHONG_WITH_TEXTURE");	break;
 	};
-	
-	//switch (ambientValue) {
-	//case 0 : 	material.ambient = 0.1f;
-	//	material.diffuse = 0.5f;
-	//	material.specular = 0.5f;
-	//	material.shininess = 30;
-	//}
-	//break;
-	//{
-	//default:
-	//	break;
-	//}
 
 	//get technique description
 	pTechnique->GetDesc( &techDesc );

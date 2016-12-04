@@ -130,11 +130,13 @@ PS_INPUT_PV VS_VERTEX_LIGHTING_PHONG( VS_INPUT input )
 
 float4 PS_VERTEX_LIGHTING_PHONG( PS_INPUT_PV input ) : SV_Target
 {    
-	//with texturing
-	return input.i * colorMap.Sample(linearSampler, input.t);
-	
 	//no texturing pure lighting
 	return input.i;      
+}
+float4 PS_VERTEX_LIGHTING_PHONG_WITH_TEXTURE(PS_INPUT_PV input) : SV_Target
+{
+	//with texturing
+	return input.i * colorMap.Sample(linearSampler, input.t);
 }
 //--------------------------------------------------------------------------------------
 // PER VERTEX LIGHTING - BLINN-PHONG
@@ -165,7 +167,7 @@ PS_INPUT_PV VS_VERTEX_LIGHTING_BLINNPHONG( VS_INPUT input )
 float4 PS_VERTEX_LIGHTING_BLINNPHONG( PS_INPUT_PV input ) : SV_Target
 {    
 	//with texturing
-	return input.i * colorMap.Sample(linearSampler, input.t);
+	//return input.i * colorMap.Sample(linearSampler, input.t);
 	
 	//no texturing pure lighting
 	return input.i;      
@@ -201,12 +203,24 @@ float4 PS_PIXEL_LIGHTING_PHONG( PS_INPUT_PP_PHONG input ) : SV_Target
 	
 	//calculate lighting		
 	float4 I = calcPhongLighting( material, light.color, input.n, -light.dir, V, R );
-    
-	//with texturing
-	return I * colorMap.Sample(linearSampler, input.t);
-	
+
 	//no texturing pure lighting
 	return I;    
+}
+
+float4 PS_PIXEL_LIGHTING_PHONG_WITH_TEXTURE(PS_INPUT_PP_PHONG input) : SV_Target
+{
+	//calculate lighting vectors - renormalize vectors
+	input.n = normalize(input.n);
+	float3 V = normalize(eye - (float3) input.wp);
+	//DONOT USE -light.dir since the reflection returns a ray from the surface
+	float3 R = reflect(light.dir, input.n);
+
+	//calculate lighting		
+	float4 I = calcPhongLighting(material, light.color, input.n, -light.dir, V, R);
+
+	//with texturing
+	return I * colorMap.Sample(linearSampler, input.t);
 }
 //--------------------------------------------------------------------------------------
 // PER PIXEL LIGHTING 
@@ -241,7 +255,7 @@ float4 PS_PIXEL_LIGHTING_BLINNPHONG( PS_INPUT_PP_BLINNPHONG input ) : SV_Target
 	float4 I = calcBlinnPhongLighting( material, light.color, input.n, -light.dir, input.h );
 	
 	//with texturing
-	return I * colorMap.Sample(linearSampler, input.t);
+	//return I * colorMap.Sample(linearSampler, input.t);
 	
 	//no texturing pure lighting
 	return I;    
@@ -271,15 +285,15 @@ technique10 RENDER_VL_PHONG
     }    
 }
 
-technique10 RENDER_VL_BLINNPHONG
+technique10 RENDER_VL_PHONG_WITH_TEXTURE
 {
-    pass P0
-    {
-        SetVertexShader( CompileShader( vs_4_0, VS_VERTEX_LIGHTING_BLINNPHONG() ) );
-        SetGeometryShader( NULL );
-        SetPixelShader( CompileShader( ps_4_0, PS_VERTEX_LIGHTING_BLINNPHONG() ) );
-        SetRasterizerState( rsSolid );
-    }    
+	pass P0
+	{
+		SetVertexShader(CompileShader(vs_4_0, VS_VERTEX_LIGHTING_PHONG()));
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PS_VERTEX_LIGHTING_PHONG_WITH_TEXTURE()));
+		SetRasterizerState(rsSolid);
+	}
 }
 
 technique10 RENDER_PL_PHONG
@@ -293,13 +307,13 @@ technique10 RENDER_PL_PHONG
     }    
 }
 
-technique10 RENDER_PL_BLINNPHONG
+technique10 RENDER_PL_PHONG_WITH_TEXTURE
 {
-    pass P0
-    {
-        SetVertexShader( CompileShader( vs_4_0, VS_PIXEL_LIGHTING_BLINNPHONG() ) );
-        SetGeometryShader( NULL );
-        SetPixelShader( CompileShader( ps_4_0, PS_PIXEL_LIGHTING_BLINNPHONG() ) );
-        SetRasterizerState( rsSolid );
-    }    
+	pass P0
+	{
+		SetVertexShader(CompileShader(vs_4_0, VS_PIXEL_LIGHTING_PHONG()));
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PS_PIXEL_LIGHTING_PHONG_WITH_TEXTURE()));
+		SetRasterizerState(rsSolid);
+	}
 }

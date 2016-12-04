@@ -97,12 +97,17 @@
   <ItemGroup>
     <ClCompile Include="dxManager.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="dxResources.cpp" />
+    <ClCompile Include="OBJLoader.cpp" />
     <ClCompile Include="winMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxManager.h" />
+    <ClInclude Include="dxResources.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="lights.h" />
+    <ClInclude Include="NMD_Types.h" />
+    <ClInclude Include="OBJLoader.h" />
     <ClInclude Include="vertexTypes.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="hrTimer.h" />
