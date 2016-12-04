@@ -61,7 +61,7 @@ bool initWindow(HWND &hWnd, HINSTANCE hInstance, int width, int height)
 	wcex.hCursor		= LoadCursor(NULL, IDC_ARROW);
 	wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW+1);
 	wcex.lpszMenuName	= NULL;
-	wcex.lpszClassName	= TEXT("DXTutorial");
+	wcex.lpszClassName	= TEXT("Project-1");
 	wcex.hIconSm		= 0;
 	RegisterClassEx(&wcex);
 
@@ -70,7 +70,7 @@ bool initWindow(HWND &hWnd, HINSTANCE hInstance, int width, int height)
     AdjustWindowRect(&rect, WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, FALSE);
 
 	//create the window from the class defined above	
-	hWnd = CreateWindow( "DXTutorial", 
+	hWnd = CreateWindow( "Project-1", 
 						 "Per Vertex Phong Lighting (Push L to toggle)", 
 						 WS_OVERLAPPED | WS_SYSMENU | WS_MINIMIZEBOX,
 						 CW_USEDEFAULT, 

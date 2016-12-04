@@ -14,7 +14,7 @@
     <ProjectGuid>{29BC781E-2251-4A03-BBFA-2915195724AB}</ProjectGuid>
     <RootNamespace>Tutorial8</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>DX10 Tutorial8</ProjectName>
+    <ProjectName>Project1</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
