@@ -84,6 +84,12 @@ void inline HandleRawInput( HWND &hWnd, HRAWINPUT &lParam )
 					case 'D' : pCamera->setMovementToggle( 3, 1 );
 					break;
 
+					case '1': ambientValue = 1;
+					break;
+
+					case '2': ambientValue = 2;
+					break;
+
 					case 32 : {
 									if ( ++lightingTechnique == 4 ) lightingTechnique = 0;
 

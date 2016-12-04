@@ -71,7 +71,7 @@ bool initWindow(HWND &hWnd, HINSTANCE hInstance, int width, int height)
 
 	//create the window from the class defined above	
 	hWnd = CreateWindow( "Project-1", 
-						 "Per Vertex Phong Lighting (Push L to toggle)", 
+						 "Per Vertex Phong Lighting", 
 						 WS_OVERLAPPED | WS_SYSMENU | WS_MINIMIZEBOX,
 						 CW_USEDEFAULT, 
 						 CW_USEDEFAULT, 

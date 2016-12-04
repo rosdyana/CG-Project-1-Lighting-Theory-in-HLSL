@@ -360,12 +360,12 @@ bool dxManager::initializeObjects()
 			
 	//CREATE LIGHTS AND MATERIAL
 	//--------------------------------------------------------------------------------
-	ambientLight = D3DXVECTOR4(1.0f,1.0f,1.0f,1.0f);
-	
+	ambientLight = D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
+
 	//set directional light - MAKE sure light direction is a unit vector
-	directionalLight.color = D3DXVECTOR4(1.0f,1.0f,1.0f,1.0f);
-	directionalLight.direction = D3DXVECTOR3(1,-1,0);
-	D3DXVec3Normalize(&directionalLight.direction, &directionalLight.direction);
+	directionalLight.color = D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
+	directionalLight.direction = D3DXVECTOR3(1, -1, 0);
+	D3DXVec3Normalize( &directionalLight.direction,  &directionalLight.direction);
 
 	material.ambient = 0.1f;
 	material.diffuse = 0.5f;
@@ -421,12 +421,35 @@ void dxManager::renderScene()
 
 	//draw terrain
 	//------------------------------------------------------------------------
-	
+	ID3D10EffectVariable* pVar = pBasicEffect->GetVariableByName("light");
+	pVar = pBasicEffect->GetVariableByName("material");
+	switch (ambientValue) {
+		case 1 :
+			material.ambient += 0.01f;
+			material.diffuse += 0.05f;
+			material.specular += 0.05f;
+			material.shininess += 2;
+			pVar->SetRawValue(&material, 0, sizeof(Material));
+			ambientValue = 0;
+			break;
+		case 2 :
+			material.ambient -= 0.01f;
+			material.diffuse -= 0.05f;
+			material.specular -= 0.05f;
+			material.shininess -= 2;
+			pVar->SetRawValue(&material, 0, sizeof(Material));
+			ambientValue = 0;
+			break;
+	}
 	//get appropriate technique
 	switch (lightingTechnique)
 	{
-		case 0 : pTechnique = pBasicEffect->GetTechniqueByName("RENDER_VL_PHONG");	break;
-		case 1 : pTechnique = pBasicEffect->GetTechniqueByName("RENDER_PL_PHONG");	break;
+		case 0 : 
+			pTechnique = pBasicEffect->GetTechniqueByName("RENDER_VL_PHONG");
+			break;
+		case 1 : 
+			pTechnique = pBasicEffect->GetTechniqueByName("RENDER_PL_PHONG");	
+			break;
 		case 2 : pTechnique = pBasicEffect->GetTechniqueByName("RENDER_VL_PHONG_WITH_TEXTURE");	break;
 		case 3 : pTechnique = pBasicEffect->GetTechniqueByName("RENDER_PL_PHONG_WITH_TEXTURE");	break;
 	};
