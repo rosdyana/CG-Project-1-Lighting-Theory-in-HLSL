@@ -8,12 +8,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
-    <ClCompile Include="OBJLoader.cpp">
-      <Filter>Model Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="dxResources.cpp">
-      <Filter>DXManager</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxManager.h">
@@ -34,15 +28,6 @@
     <ClInclude Include="lights.h">
       <Filter>DXManager</Filter>
     </ClInclude>
-    <ClInclude Include="OBJLoader.h">
-      <Filter>Model Loader</Filter>
-    </ClInclude>
-    <ClInclude Include="NMD_Types.h">
-      <Filter>Model Loader</Filter>
-    </ClInclude>
-    <ClInclude Include="dxResources.h">
-      <Filter>DXManager</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="DXManager">
@@ -56,9 +41,6 @@
     </Filter>
     <Filter Include="Camera">
       <UniqueIdentifier>{e9963219-8694-4ed0-82d1-348a34dbbb0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Model Loader">
-      <UniqueIdentifier>{b5713ea0-7700-4f4e-b4e0-490c27462a60}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
