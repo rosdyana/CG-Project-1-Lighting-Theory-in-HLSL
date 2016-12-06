@@ -189,6 +189,91 @@ float4 PS_PIXEL_LIGHTING_PHONG_WITH_TEXTURE(PS_INPUT_PP_PHONG input) : SV_Target
 	return I * colorMap.Sample(linearSampler, input.t);
 }
 //--------------------------------------------------------------------------------------
+// PER VERTEX LIGHTING - BLINN-PHONG
+//--------------------------------------------------------------------------------------
+PS_INPUT_PV VS_VERTEX_LIGHTING_BLINNPHONG(VS_INPUT input)
+{
+	PS_INPUT_PV output;
+
+	//transform position to clip space
+	input.p = mul(input.p, World);
+	output.p = mul(input.p, View);
+	output.p = mul(output.p, Projection);
+
+	//set texture coords
+	output.t = input.t;
+
+	//calculate lighting
+	float3 N = normalize(mul(input.n, (float3x3) World));
+	float3 V = normalize(eye - (float3) input.p);
+	float3 H = normalize(-light.dir + V);
+
+	//calculate per vertex lighting intensity and interpolate it like a color
+	output.i = calcBlinnPhongLighting(material, light.color, N, -light.dir, H);
+
+	return output;
+}
+
+float4 PS_VERTEX_LIGHTING_BLINNPHONG(PS_INPUT_PV input) : SV_Target
+{
+	//no texturing pure lighting
+	return input.i;
+}
+
+float4 PS_VERTEX_LIGHTING_BLINNPHONG_WITH_TEXTURE(PS_INPUT_PV input) : SV_Target
+{
+	//with texturing
+	return input.i * colorMap.Sample(linearSampler, input.t);
+}
+//--------------------------------------------------------------------------------------
+// PER PIXEL LIGHTING 
+//--------------------------------------------------------------------------------------
+PS_INPUT_PP_BLINNPHONG VS_PIXEL_LIGHTING_BLINNPHONG(VS_INPUT input)
+{
+	PS_INPUT_PP_BLINNPHONG output;
+
+	//set position into clip space
+	input.p = mul(input.p, World);
+	output.p = mul(input.p, View);
+	output.p = mul(output.p, Projection);
+
+	//set texture coords
+	output.t = input.t;
+
+	//set required lighting vectors for interpolation
+	float3 V = normalize(eye - (float3) input.p);
+	output.n = normalize(mul(input.n, (float3x3)World));
+	output.h = normalize(-light.dir + V);
+
+	return output;
+}
+
+float4 PS_PIXEL_LIGHTING_BLINNPHONG(PS_INPUT_PP_BLINNPHONG input) : SV_Target
+{
+	//renormalize interpolated vectors
+	input.n = normalize(input.n);
+	input.h = normalize(input.h);
+
+	//calculate lighting	
+	float4 I = calcBlinnPhongLighting(material, light.color, input.n, -light.dir, input.h);
+
+	//no texturing pure lighting
+	return I;
+}
+
+float4 PS_PIXEL_LIGHTING_BLINNPHONG_WITH_TEXTURE(PS_INPUT_PP_BLINNPHONG input) : SV_Target
+{
+	//renormalize interpolated vectors
+	input.n = normalize(input.n);
+	input.h = normalize(input.h);
+
+	//calculate lighting	
+	float4 I = calcBlinnPhongLighting(material, light.color, input.n, -light.dir, input.h);
+
+	//with texturing
+	return I * colorMap.Sample(linearSampler, input.t);
+}
+//--------------------------------------------------------------------------------------
 // Techniques
 //--------------------------------------------------------------------------------------
 technique10 RENDER
@@ -242,6 +327,50 @@ technique10 RENDER_PL_PHONG_WITH_TEXTURE
 		SetVertexShader(CompileShader(vs_4_0, VS_PIXEL_LIGHTING_PHONG()));
 		SetGeometryShader(NULL);
 		SetPixelShader(CompileShader(ps_4_0, PS_PIXEL_LIGHTING_PHONG_WITH_TEXTURE()));
+		SetRasterizerState(rsSolid);
+	}
+}
+
+technique10 RENDER_PL_BLINNPHONG
+{
+	pass P0
+	{
+		SetVertexShader(CompileShader(vs_4_0, VS_PIXEL_LIGHTING_BLINNPHONG()));
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PS_PIXEL_LIGHTING_BLINNPHONG()));
+		SetRasterizerState(rsSolid);
+	}
+}
+
+technique10 RENDER_VL_BLINNPHONG
+{
+	pass P0
+	{
+		SetVertexShader(CompileShader(vs_4_0, VS_VERTEX_LIGHTING_BLINNPHONG()));
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PS_VERTEX_LIGHTING_BLINNPHONG()));
+		SetRasterizerState(rsSolid);
+	}
+}
+
+technique10 RENDER_PL_BLINNPHONG_WITH_TEXTURE
+{
+	pass P0
+	{
+		SetVertexShader(CompileShader(vs_4_0, VS_PIXEL_LIGHTING_BLINNPHONG()));
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PS_PIXEL_LIGHTING_BLINNPHONG_WITH_TEXTURE()));
+		SetRasterizerState(rsSolid);
+	}
+}
+
+technique10 RENDER_VL_BLINNPHONG_WITH_TEXTURE
+{
+	pass P0
+	{
+		SetVertexShader(CompileShader(vs_4_0, VS_VERTEX_LIGHTING_BLINNPHONG()));
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PS_VERTEX_LIGHTING_BLINNPHONG_WITH_TEXTURE()));
 		SetRasterizerState(rsSolid);
 	}
 }

@@ -20,7 +20,7 @@ int windowHeight = 600;
 dxManager dx;
 Camera* pCamera = new Camera();
 unsigned char lightingTechnique = 0;
-unsigned char ambientValue = 0;
+unsigned char materialValues = 0;
 
 /*******************************************************************
 * Main Window Procedure - handles application events

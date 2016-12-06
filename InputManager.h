@@ -3,7 +3,7 @@
 
 extern Camera* pCamera;
 extern unsigned char lightingTechnique;
-extern unsigned char ambientValue;
+extern unsigned char materialValues;
 
 //register keyboard mouse as input devices!
 bool RegisterInputDevices( HWND &hWnd )
@@ -84,14 +84,14 @@ void inline HandleRawInput( HWND &hWnd, HRAWINPUT &lParam )
 					case 'D' : pCamera->setMovementToggle( 3, 1 );
 					break;
 
-					case '1': ambientValue = 1;
+					case '1': materialValues = 1;
 					break;
 
-					case '2': ambientValue = 2;
+					case '2': materialValues = 2;
 					break;
 
 					case 32 : {
-									if ( ++lightingTechnique == 4 ) lightingTechnique = 0;
+									if ( ++lightingTechnique == 8 ) lightingTechnique = 0;
 
 									char MSG[255];
 									switch (lightingTechnique)
@@ -100,6 +100,10 @@ void inline HandleRawInput( HWND &hWnd, HRAWINPUT &lParam )
 										case 1 : sprintf_s(MSG, "Per Pixel Phong Lighting"); 	break;
 										case 2 : sprintf_s(MSG, "Per Vertex Phong Lighting with Texture"); 	break;
 										case 3 : sprintf_s(MSG, "Per Pixel Phong Lighting with Texture"); 	break;
+										case 4 : sprintf_s(MSG, "Per Vertex Blinn Phong Lighting"); 	break;
+										case 5 : sprintf_s(MSG, "Per Pixel Blinn Phong Lighting"); 	break;
+										case 6 : sprintf_s(MSG, "Per Vertex Blinn Phong Lighting with Texture"); 	break;
+										case 7 : sprintf_s(MSG, "Per Pixel Blinn Phong Lighting with Texture"); 	break;
 									};
 									SetWindowText(hWnd, MSG);
 							   }

@@ -110,6 +110,9 @@
   <ItemGroup>
     <FX_HLSL Include="Lighting.fx">
       <TargetProfile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5</TargetProfile>
+      <FileType>Document</FileType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </EntryPointName>
     </FX_HLSL>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

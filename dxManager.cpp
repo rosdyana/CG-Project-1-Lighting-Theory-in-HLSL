@@ -5,7 +5,7 @@ using namespace std;
 #include "Camera.h"
 extern Camera* pCamera;
 extern unsigned char lightingTechnique;
-extern unsigned char ambientValue;
+extern unsigned char materialValues;
 
 /*******************************************************************
 * Constructor
@@ -90,7 +90,7 @@ bool dxManager::createSwapChainAndDevice( UINT width, UINT height )
 	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
 	
 	//sampling settings
-	swapChainDesc.SampleDesc.Quality = 1;
+	swapChainDesc.SampleDesc.Quality = 0;
 	swapChainDesc.SampleDesc.Count = 1;
 
 	//output window handle
@@ -380,7 +380,7 @@ bool dxManager::initializeObjects()
 	pVar->SetRawValue(&material, 0, sizeof(Material));
 
 	pVar = pBasicEffect->GetVariableByName( "ambientLight" );
-	pVar->SetRawValue( &ambientLight, 0, 16 );
+	pVar->SetRawValue( &ambientLight, 0, 20 );
 
 
 	//Load Terrain Texture
@@ -423,14 +423,14 @@ void dxManager::renderScene()
 	//------------------------------------------------------------------------
 	ID3D10EffectVariable* pVar = pBasicEffect->GetVariableByName("light");
 	pVar = pBasicEffect->GetVariableByName("material");
-	switch (ambientValue) {
+	switch (materialValues) {
 		case 1 :
 			material.ambient += 0.01f;
 			material.diffuse += 0.05f;
 			material.specular += 0.05f;
 			material.shininess += 2;
 			pVar->SetRawValue(&material, 0, sizeof(Material));
-			ambientValue = 0;
+			materialValues = 0;
 			break;
 		case 2 :
 			material.ambient -= 0.01f;
@@ -438,7 +438,7 @@ void dxManager::renderScene()
 			material.specular -= 0.05f;
 			material.shininess -= 2;
 			pVar->SetRawValue(&material, 0, sizeof(Material));
-			ambientValue = 0;
+			materialValues = 0;
 			break;
 	}
 	//get appropriate technique
@@ -450,8 +450,24 @@ void dxManager::renderScene()
 		case 1 : 
 			pTechnique = pBasicEffect->GetTechniqueByName("RENDER_PL_PHONG");	
 			break;
-		case 2 : pTechnique = pBasicEffect->GetTechniqueByName("RENDER_VL_PHONG_WITH_TEXTURE");	break;
-		case 3 : pTechnique = pBasicEffect->GetTechniqueByName("RENDER_PL_PHONG_WITH_TEXTURE");	break;
+		case 2 : 
+			pTechnique = pBasicEffect->GetTechniqueByName("RENDER_VL_PHONG_WITH_TEXTURE");	
+			break;
+		case 3 : 
+			pTechnique = pBasicEffect->GetTechniqueByName("RENDER_PL_PHONG_WITH_TEXTURE");	
+			break;
+		case 4 : 
+			pTechnique = pBasicEffect->GetTechniqueByName("RENDER_VL_BLINNPHONG");	
+			break;
+		case 5 : 
+			pTechnique = pBasicEffect->GetTechniqueByName("RENDER_PL_BLINNPHONG");	
+			break;
+		case 6:
+			pTechnique = pBasicEffect->GetTechniqueByName("RENDER_VL_BLINNPHONG_WITH_TEXTURE");
+			break;
+		case 7:
+			pTechnique = pBasicEffect->GetTechniqueByName("RENDER_PL_BLINNPHONG_WITH_TEXTURE");
+			break;
 	};
 
 	//get technique description
