@@ -398,7 +398,7 @@ bool dxManager::initializeObjects()
 void dxManager::renderScene()
 {
 	//clear scene
-	pD3DDevice->ClearRenderTargetView( pRenderTargetView, D3DXCOLOR(0.882f,0.863f,0.953f,1) );
+	pD3DDevice->ClearRenderTargetView( pRenderTargetView, D3DXCOLOR(0.529f, 0.808f, 0.922f,1) );
 	pD3DDevice->ClearDepthStencilView( pDepthStencilView, D3D10_CLEAR_DEPTH, 1.0f, 0 );
 	
 	//set effect variables

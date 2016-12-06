@@ -70,27 +70,49 @@ void inline HandleRawInput( HWND &hWnd, HRAWINPUT &lParam )
 				switch ( raw->data.keyboard.VKey )
 				{
 					case VK_ESCAPE : PostQuitMessage(0);
-					break;
+						break;
 
 					case 'W' : pCamera->setMovementToggle( 0, 1 );
-					break;
+						break;
 
 					case 'S' : pCamera->setMovementToggle( 1, -1 );
-					break;
+						break;
 
 					case 'A' : pCamera->setMovementToggle( 2, -1 );
-					break;
+						break;
 
 					case 'D' : pCamera->setMovementToggle( 3, 1 );
-					break;
+						break;
 
-					case '1': materialValues = 1;
-					break;
+					case '1' : materialValues = 1;
+						break;
 
-					case '2': materialValues = 2;
-					break;
+					case '2' : materialValues = 2;
+						break;
 
-					case 32 : {
+					case '3' : {
+								if (lightingTechnique-- <= 0) lightingTechnique = 7;
+
+								char MSG[255];
+								switch (lightingTechnique)
+								{
+									case 0: sprintf_s(MSG, "Per Vertex Phong Lighting"); 	break;
+									case 1: sprintf_s(MSG, "Per Pixel Phong Lighting"); 	break;
+									case 2: sprintf_s(MSG, "Per Vertex Phong Lighting with Texture"); 	break;
+									case 3: sprintf_s(MSG, "Per Pixel Phong Lighting with Texture"); 	break;
+									case 4: sprintf_s(MSG, "Per Vertex Blinn Phong Lighting"); 	break;
+									case 5: sprintf_s(MSG, "Per Pixel Blinn Phong Lighting"); 	break;
+									case 6: sprintf_s(MSG, "Per Vertex Blinn Phong Lighting with Texture"); 	break;
+									case 7: sprintf_s(MSG, "Per Pixel Blinn Phong Lighting with Texture"); 	break;
+								};
+								SetWindowText(hWnd, MSG);
+							}
+						break;
+
+					case 'H' : MessageBox(NULL, "A = left , W = foward, S = backward, D = Right\n 3 or 4 = change light equations\n 1 = add value for light materials , 2 = reduce value for light materials", "Control Hints", MB_OK | MB_ICONQUESTION);
+						break;
+
+					case '4' : {
 									if ( ++lightingTechnique == 8 ) lightingTechnique = 0;
 
 									char MSG[255];

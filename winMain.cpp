@@ -110,6 +110,8 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 	//set up directx manager
 	if ( !dx.initialize(&hWnd) ) return 0;
 	
+	MessageBox(NULL, "A = left , W = foward, S = backward, D = Right\n 3 or 4 = change light equations\n 1 = add value for light materials , 2 = reduce value for light materials", "Control Hints", MB_OK | MB_ICONQUESTION);
+
 	// Main message loop
     MSG msg = {0};
     while (WM_QUIT != msg.message)
