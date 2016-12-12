@@ -214,7 +214,8 @@ bool dxManager::loadShadersAndCreateInputLayouts()
 bool dxManager::initializeObjects()
 {
 	//read heightmap values
-	FIBITMAP *pHeightMap = FreeImage_Load(FIF_BMP, "heightmap.bmp", BMP_DEFAULT);
+	FIBITMAP *pHeightMap = FreeImage_Load(FIF_BMP, "terrain_heightmap.bmp", BMP_DEFAULT);
+	//FIBITMAP *pHeightMap = FreeImage_Load(FIF_BMP, "heightmap.bmp", BMP_DEFAULT);
 	int hmHeight = 0, hmWidth = 0;
 	float* pHeightData = 0;
 		
@@ -364,13 +365,13 @@ bool dxManager::initializeObjects()
 
 	//set directional light - MAKE sure light direction is a unit vector
 	directionalLight.color = D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
-	directionalLight.direction = D3DXVECTOR3(1, -1, 0);
+	directionalLight.direction = D3DXVECTOR3(1.0f, -1.0f, 0.0f);
 	D3DXVec3Normalize( &directionalLight.direction,  &directionalLight.direction);
 
 	material.ambient = 0.1f;
 	material.diffuse = 0.5f;
 	material.specular = 0.5f;
-	material.shininess = 30;
+	material.shininess = 30.0f;
 
 	//set variables
 	ID3D10EffectVariable* pVar = pBasicEffect->GetVariableByName( "light" );
@@ -428,7 +429,7 @@ void dxManager::renderScene()
 			material.ambient += 0.01f;
 			material.diffuse += 0.05f;
 			material.specular += 0.05f;
-			material.shininess += 2;
+			material.shininess += 2.0f;
 			pVar->SetRawValue(&material, 0, sizeof(Material));
 			materialValues = 0;
 			break;
@@ -436,7 +437,7 @@ void dxManager::renderScene()
 			material.ambient -= 0.01f;
 			material.diffuse -= 0.05f;
 			material.specular -= 0.05f;
-			material.shininess -= 2;
+			material.shininess -= 2.0f;
 			pVar->SetRawValue(&material, 0, sizeof(Material));
 			materialValues = 0;
 			break;
